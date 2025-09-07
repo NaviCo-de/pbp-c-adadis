@@ -9,8 +9,8 @@ class Product(models.Model):
     ]
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField()
-    stock = models.IntegerField(default=0)
-    price = models.IntegerField(default=0)
+    stock = models.PositiveIntegerField(default=0)
+    price = models.PositiveIntegerField(default=0)
     description = models.TextField()
     thumbnail = models.URLField(blank=True, null=True)
     category = models.CharField(choices=PILIHAN_KATEGORI, default='Dewasa')
