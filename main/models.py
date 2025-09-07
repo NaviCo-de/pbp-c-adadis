@@ -13,9 +13,9 @@ class Product(models.Model):
     price = models.PositiveIntegerField(default=0)
     description = models.TextField()
     thumbnail = models.URLField(blank=True, null=True)
-    category = models.CharField(choices=PILIHAN_KATEGORI, default='Dewasa')
+    category = models.CharField(choices=PILIHAN_KATEGORI, default='dewasa')
     total_sold = models.PositiveIntegerField(default=0)
-    is_featured = models.BooleanField(default=False)
+    is_featured = models.BooleanField(default=False, editable=False)
 
     def __str__(self):
         return self.name
