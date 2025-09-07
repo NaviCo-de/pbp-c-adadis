@@ -14,6 +14,7 @@ class Product(models.Model):
     description = models.TextField()
     thumbnail = models.URLField(blank=True, null=True)
     category = models.CharField(choices=PILIHAN_KATEGORI, default='Dewasa')
+    total_sold = models.PositiveIntegerField(default=0)
     is_featured = models.BooleanField(default=False)
 
     def __str__(self):
@@ -21,7 +22,10 @@ class Product(models.Model):
 
     @property
     def is_product_featured(self):
-        if (self.stock > 20):
+        if (self.total_sold > 100):
             self.is_featured = True
         self.is_featured = False
+        self.save()
+    def increment_total_sold(self, amount):
+        self.total_sold += amount
         self.save()
