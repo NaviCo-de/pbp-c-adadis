@@ -4,8 +4,10 @@ from django.db import models
 # Create your models here.
 class Product(models.Model):
     PILIHAN_KATEGORI = [
-        ('anak-anak', 'Anak-anak'),
-        ('dewasa', 'Dewasa')
+        ('sepatu', 'Sepatu'),
+        ('bola', 'Bola'),
+        ('jersey', 'Jersey'),
+        ('slingbag', 'Slingbag')
     ]
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField()
@@ -13,8 +15,8 @@ class Product(models.Model):
     price = models.PositiveIntegerField(default=0)
     description = models.TextField()
     thumbnail = models.URLField(blank=True, null=True)
-    category = models.CharField(choices=PILIHAN_KATEGORI, default='dewasa')
-    total_sold = models.PositiveIntegerField(default=0)
+    category = models.CharField(choices=PILIHAN_KATEGORI, default='sepatu')
+    total_sold = models.PositiveIntegerField(default=0, editable=False)
     is_featured = models.BooleanField(default=False, editable=False)
 
     def __str__(self):
@@ -26,6 +28,11 @@ class Product(models.Model):
             self.is_featured = True
         self.is_featured = False
         self.save()
-    def increment_total_sold(self, amount):
+    def bought_stock(self, amount):
         self.total_sold += amount
+        self.stock -= amount
+        self.save()
+
+    def add_stock(self, amount):
+        self.stock += amount
         self.save()

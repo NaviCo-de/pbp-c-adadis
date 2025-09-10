@@ -31,7 +31,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "ari-darrell-footballshop.pbp.cs.ui.ac.id"]
 
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://ari-darrell-footballshop.pbp.cs.ui.ac.id"
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -59,7 +61,7 @@ ROOT_URLCONF = 'adadis.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
