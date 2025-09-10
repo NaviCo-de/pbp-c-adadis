@@ -5,11 +5,12 @@ from main.models import Product
 # Create your views here.
 def show_main(request):
     product_list = Product.objects.all()
+
     context = {
         'npm' : '2406432103',
         'nama': 'Darrell',
         'kelas': 'PBP C',
-        'product': product_list
+        'product_list': product_list
     }
 
     return render(request, "main.html", context)
