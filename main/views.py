@@ -8,8 +8,8 @@ def show_main(request):
 
     context = {
         'npm' : '2406432103',
-        'nama': 'Darrell',
-        'kelas': 'PBP C',
+        'name': 'Darrell',
+        'class': 'PBP C',
         'product_list': product_list
     }
 
