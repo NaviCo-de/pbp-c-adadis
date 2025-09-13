@@ -7,15 +7,23 @@ class Product(models.Model):
         ('sepatu', 'Sepatu'),
         ('bola', 'Bola'),
         ('jersey', 'Jersey'),
-        ('slingbag', 'Slingbag')
+        ('slingbag', 'Slingbag'),
+        ('celana', 'Celana')
+    ]
+
+    SIZE_SEPATU = [
+        ('40', '40'),
+        ('41', '41'),
+        ('42', '42')
     ]
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField()
     stock = models.PositiveIntegerField(default=0)
     price = models.PositiveIntegerField(default=0)
+    size = models.CharField(choices=SIZE_SEPATU, default='40')
     description = models.TextField()
     thumbnail = models.URLField(blank=True, null=True)
-    category = models.CharField(choices=PILIHAN_KATEGORI, default='sepatu')
+    category = models.CharField(choices=PILIHAN_KATEGORI, default='bola')
     total_sold = models.PositiveIntegerField(default=0, editable=False)
     is_featured = models.BooleanField(default=False, editable=False)
 
