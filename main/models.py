@@ -16,6 +16,7 @@ class Product(models.Model):
         ('41', '41'),
         ('42', '42')
     ]
+    
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField()
     stock = models.PositiveIntegerField(default=0)
