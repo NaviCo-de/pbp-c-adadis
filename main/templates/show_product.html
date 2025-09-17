@@ -15,4 +15,10 @@
 
 <p>{{ product.description }}</p>
 
+{% if product.user %}
+    <p>PENJUAL: {{ product.user.username }}</p>
+{% else %}
+    <p>PENJUAL: Anonymous</p>
+{% endif %}
+
 {% endblock content %}
