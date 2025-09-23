@@ -1,4 +1,6 @@
 # pbp-c-adadis
+<b>TUGAS INDIVIDU 1</b>
+
 <b>1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).</b>
 
 Untuk mengimplementasikan checklist tersebut, langkah pertama yang saya lakukan adalah membuat proyek Django baru menggunakan perintah django-admin startproject <nama_proyek>, kemudian saya masuk ke folder proyek dan membuat aplikasi dengan nama main menggunakan python manage.py startapp main. Setelah aplikasi dibuat, saya mendaftarkannya ke dalam INSTALLED_APPS pada file settings.py agar bisa dijalankan. Selanjutnya, saya melakukan routing pada proyek dengan menambahkan path menuju aplikasi main di dalam urls.py proyek utama. 
@@ -77,6 +79,8 @@ Tidak ada, asisten dosen sduah sangat membantu serta menjawab pertanyaan-pertany
 
 <hr>
 
+<b>TUGAS INDIVIDU 3</b>
+
 <b>7. Mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?</b>
 
 Dalam sebuah platform, komponen-komponen seperti frontend, backend, dan database harus bisa saling berkomunikasi. Agar komunikasi ini dapat berjalan, diperlukan mekanisme data delivery. Data delivery memungkinkan informasi dari satu komponen dapat dikirimkan dan dipahami oleh komponen lain dengan format yang terstandar. Tanpa adanya data delivery, integrasi antar sistem akan sulit dilakukan, data bisa tidak konsisten, dan pertukaran informasi tidak akan efisien. Oleh karena itu, data delivery merupakan elemen penting dalam pengembangan platform modern.
@@ -134,3 +138,111 @@ SHOW JSON
 
 SHOW JSON BY ID
 ![alt text](./photos/postman_xml_id.jpg)
+
+<hr>
+
+<b>TUGAS INDIVIDU 4</b>
+
+<b>1. Apa itu Django AuthenticationForm? Jelaskan juga kelebihan dan kekurangannya.</b>
+
+`AuthenticationForm` adalah form bawaan Django yang digunakan untuk proses login. Form ini secara otomatis menyediakan field username dan password, serta melakukan validasi terhadap kredensial pengguna.
+
+Kelebihan:
+
+- Praktis: Tidak perlu menulis form login dari nol.
+
+- Terintegrasi dengan sistem autentikasi Django.
+
+- Sudah memiliki validasi standar (contoh: cek apakah user aktif, password benar).
+
+Kekurangan:
+
+- Kurang fleksibel jika butuh login dengan field lain (contoh: email, nomor HP).
+
+- Styling default sederhana, jadi biasanya perlu dikustomisasi.
+
+<hr>
+
+<b>2. Apa perbedaan antara autentikasi dan otorisasi? Bagaiamana Django mengimplementasikan kedua konsep tersebut?</b>
+
+Autentikasi (Authentication): Proses memverifikasi identitas pengguna (contoh: login dengan username & password).
+
+Otorisasi (Authorization): Proses menentukan hak akses pengguna terhadap resource tertentu (contoh: hanya admin boleh menghapus data).
+
+Implementasi di Django:
+
+- Autentikasi: menggunakan sistem django.contrib.auth (`login`, `logout`, `AuthenticationForm`).
+
+- Otorisasi: menggunakan permissions, groups, dan dekorator seperti `@login_required` atau `@permission_required`.
+
+<hr>
+
+<b>3. Apa saja kelebihan dan kekurangan session dan cookies dalam konteks menyimpan state di aplikasi web?</b>
+
+- Session:
+
+    - Disimpan di server.
+
+    - Lebih aman karena data sensitif tidak terlihat langsung di browser.
+
+    - Kekurangan: Membebani server jika banyak user.
+
+- Cookies:
+
+    - Disimpan di browser user.
+
+    - Berguna untuk menyimpan data kecil seperti preferensi, last_login.
+
+    - Kekurangan: Rentan diubah user, dan bisa bocor jika tidak dienkripsi.
+
+<hr>
+
+<b>4. Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai? Bagaimana Django menangani hal tersebut?</b>
+
+- Secara default, Django memberikan beberapa pengaturan keamanan:
+
+    - `SESSION_COOKIE_HTTPONLY = True` (mencegah akses cookie via JavaScript).
+
+    - `SESSION_COOKIE_SECURE = True` (hanya dikirim lewat HTTPS).
+
+    - `CSRF_TOKEN` untuk mencegah serangan CSRF.
+
+- Risiko yang harus diwaspadai:
+
+    - Session hijacking jika cookie tidak diamankan.
+
+    - XSS yang bisa mencuri cookie.
+
+- Cara Django menangani:
+
+    - Memberikan opsi konfigurasi keamanan (misalnya `SECURE_SSL_REDIRECT`, `CSRF_COOKIE_SECURE`).
+
+    - Middleware keamanan (`SecurityMiddleware`).
+
+<hr>
+
+<b>5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).</b>
+
+1. Registrasi, Login, Logout:
+
+    - Tambahkan `django.contrib.auth` di `INSTALLED_APPS`.
+
+    - Gunakan `UserCreationForm` untuk registrasi, `AuthenticationForm` untuk login.
+
+    - Gunakan `LogoutView` atau fungsi `logout()`.
+
+2. Dummy Data:
+
+    - Buat 2 user baru (buat langsung di web).
+
+    - Tambahkan 3 dummy data untuk setiap user menggunakan model yang sudah ada.
+
+3. Relasi Model:
+
+    - Tambahkan field `user = models.ForeignKey(User, on_delete=models.CASCADE)` pada model `Product`.
+
+4. Tampilkan Detail User:
+
+    - Di template utama `(main.html)`, tampilkan request.user.username dan last_login.
+
+    - Aktifkan session agar `last_login` tersimpan.
