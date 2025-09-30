@@ -1,18 +1,160 @@
 {% extends 'base.html' %} 
+{% block meta %}
+<style>
+  /* Remove increment/decrement arrows from number input */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+</style>
+{% endblock meta %}
 {% block content %}
-<h1>Add Product</h1>
+{% include 'navbar.html' %}
 
-<form method="POST">
-  {% csrf_token %}
-  <table>
-    {{ form.as_table }}
-    <tr>
-      <td></td>
-      <td>
-        <input type="submit" value="Add PRODUCT" />
-      </td>
-    </tr>
-  </table>
-</form>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <div class="bg-gradient-to-r from-green-500 to-emerald-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+      </div>
+      <h1 class="text-4xl font-bold text-gray-900">Add New Product</h1>
+      <p class="text-gray-600 mt-2">List your sport item for sale</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+      <form method="POST" enctype="multipart/form-data" class="space-y-6">
+        {% csrf_token %}
+        
+        <!-- Thumbnail -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">
+            Product Thumbnail
+            <span class="text-red-500">*</span>
+          </label>
+          <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-blue-400 transition duration-200">
+            <div class="space-y-1 text-center">
+              <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div class="flex text-sm text-gray-600">
+                <label for="{{ form.thumbnail.id_for_label }}" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500">
+                  <span>Upload a file</span>
+                  {{ form.thumbnail }}
+                </label>
+                <p class="pl-1">or drag and drop</p>
+              </div>
+              <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Name -->
+        <div>
+          <label for="{{ form.name.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+            Product Name
+            <span class="text-red-500">*</span>
+          </label>
+          <input type="text" name="{{ form.name.name }}" id="{{ form.name.id_for_label }}" required
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 outline-none"
+            placeholder="e.g., Nike Mercurial Vapor">
+        </div>
+
+        <!-- Price and Stock - Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Price -->
+          <div>
+            <label for="{{ form.price.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+              Price (Rp)
+              <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span class="text-gray-500 sm:text-sm">Rp</span>
+              </div>
+              <input type="number" name="{{ form.price.name }}" id="{{ form.price.id_for_label }}" required
+                class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 outline-none"
+                placeholder="0">
+            </div>
+          </div>
+
+          <!-- Stock -->
+          <div>
+            <label for="{{ form.stock.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+              Stock
+              <span class="text-red-500">*</span>
+            </label>
+            <input type="number" name="{{ form.stock.name }}" id="{{ form.stock.id_for_label }}" required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 outline-none"
+              placeholder="0">
+          </div>
+        </div>
+
+        <!-- Category -->
+        <div>
+          <label for="{{ form.category.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+            Category
+            <span class="text-red-500">*</span>
+          </label>
+          <select name="{{ form.category.name }}" id="{{ form.category.id_for_label }}" required
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 outline-none bg-white">
+            <option value="">Select a category</option>
+            <option value="sepatu">Sepatu</option>
+            <option value="bola">Bola</option>
+            <option value="jersey">Jersey</option>
+            <option value="slingbag">Slingbag</option>
+            <option value="celana">Celana</option>
+          </select>
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label for="{{ form.description.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+            Description
+            <span class="text-red-500">*</span>
+          </label>
+          <textarea name="{{ form.description.name }}" id="{{ form.description.id_for_label }}" rows="5" required
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 outline-none resize-none"
+            placeholder="Describe your product in detail..."></textarea>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex space-x-4 pt-4">
+          <button type="submit" 
+            class="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 rounded-lg font-semibold hover:from-green-600 hover:to-emerald-700 transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+            Add Product
+          </button>
+          <a href="{% url 'main:show_main' %}" 
+            class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-300 transition duration-300 text-center">
+            Cancel
+          </a>
+        </div>
+      </form>
+    </div>
+
+    <!-- Info Box -->
+    <div class="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm text-blue-700">
+            Make sure all product information is accurate and complete for better customer engagement.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
