@@ -1,0 +1,52 @@
+{% load static %}
+<nav class="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800 shadow-lg sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo & Brand -->
+      <div class="flex items-center space-x-3">
+        <div class="bg-white p-2 rounded-lg shadow-md">
+          <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 9V5a1 1 0 012 0v4a1 1 0 01-2 0zm1 4a1 1 0 100-2 1 1 0 000 2z"/>
+          </svg>
+        </div>
+        <h1 class="text-2xl font-bold text-white tracking-wide">Football Shop</h1>
+      </div>
+
+      <!-- Navigation Links -->
+      <ul class="hidden md:flex space-x-1">
+        <li>
+          <a href="/" class="px-4 py-2 text-white hover:bg-white hover:bg-opacity-20 rounded-lg transition duration-300 font-medium">
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'main:create_product' %}" class="px-4 py-2 text-white hover:bg-white hover:bg-opacity-20 rounded-lg transition duration-300 font-medium">
+            Create Product
+          </a>
+        </li>
+      </ul>
+
+      <!-- User Info / Auth -->
+      {% if user.is_authenticated %}
+        <div class="flex items-center space-x-4">
+          <div class="hidden lg:block text-right">
+            <p class="text-white font-semibold">{{ name|default:user.username }}</p>
+            <p class="text-blue-200 text-sm">{{ npm|default:"Student" }} - {{ class|default:"Class" }}</p>
+          </div>
+          <a href="{% url 'main:logout' %}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition duration-300 shadow-md">
+            Logout
+          </a>
+        </div>
+      {% else %}
+        <div class="flex space-x-3">
+          <a href="{% url 'main:login' %}" class="bg-white text-blue-700 px-5 py-2 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 shadow-md">
+            Login
+          </a>
+          <a href="{% url 'main:register' %}" class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg font-semibold transition duration-300 shadow-md">
+            Register
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</nav>
