@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block meta %}
 <title>Login - Football Shop</title>
 <style>
-  /* Styling for Django form fields */
   input[type="text"],
   input[type="password"] {
     width: 100%;
@@ -11,13 +11,11 @@
     padding-left: 2.5rem;
     border: 1px solid #d1d5db;
     border-radius: 0.5rem;
-    transition: all 0.2s;
     outline: none;
   }
   input[type="text"]:focus,
   input[type="password"]:focus {
-    ring: 2px;
-    ring-color: #3b82f6;
+    border-color: #3b82f6;
   }
   .errorlist {
     display: none;
@@ -28,131 +26,58 @@
 {% block content %}
 <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
   <div class="max-w-md mx-auto">
-    <!-- Header -->
     <div class="text-center mb-8">
-      <div class="bg-gradient-to-r from-blue-600 to-indigo-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
-        </svg>
+      <div class="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+        <span class="text-white text-2xl">🔐</span>
       </div>
       <h1 class="text-3xl font-bold text-gray-900">Welcome Back!</h1>
       <p class="text-gray-600 mt-2">Login to Football Shop</p>
     </div>
 
-    <!-- Form Card -->
-    <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-      <form method="POST" action="" class="space-y-6">
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+      <form method="POST" action="{% url 'main:login' %}" onsubmit="handleLogin(event)" class="space-y-6">
         {% csrf_token %}
         
-        <!-- Username Field -->
         <div>
           <label for="{{ form.username.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">Username</label>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
-              </svg>
+              <span class="text-gray-400">👤</span>
             </div>
             {{ form.username }}
           </div>
-          {% if form.username.errors %}
-            <div class="mt-2 space-y-1">
-              {% for error in form.username.errors %}
-              <p class="text-red-600 text-sm flex items-start">
-                <svg class="w-4 h-4 mr-1 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                </svg>
-                {{ error }}
-              </p>
-              {% endfor %}
-            </div>
-          {% endif %}
         </div>
 
-        <!-- Password Field -->
         <div>
           <label for="{{ form.password.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
-              </svg>
+              <span class="text-gray-400">🔒</span>
             </div>
             {{ form.password }}
           </div>
-          {% if form.password.errors %}
-            <div class="mt-2 space-y-1">
-              {% for error in form.password.errors %}
-              <p class="text-red-600 text-sm flex items-start">
-                <svg class="w-4 h-4 mr-1 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                </svg>
-                {{ error }}
-              </p>
-              {% endfor %}
-            </div>
-          {% endif %}
         </div>
 
-        <!-- Non-field errors -->
-        {% if form.non_field_errors %}
-        <div class="space-y-2">
-          {% for error in form.non_field_errors %}
-          <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-            <p class="text-red-700 text-sm flex items-center">
-              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-              </svg>
-              {{ error }}
-            </p>
-          </div>
-          {% endfor %}
-        </div>
-        {% endif %}
+        <div id="error-container"></div>
 
-        <!-- Messages -->
-        {% if messages %}
-        <div class="space-y-2">
-          {% for message in messages %}
-          <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-            <p class="text-red-700 text-sm flex items-center">
-              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-              </svg>
-              {{ message }}
-            </p>
-          </div>
-          {% endfor %}
-        </div>
-        {% endif %}
-
-        <!-- Submit Button -->
         <button type="submit" 
-          class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+          class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
           Login
         </button>
       </form>
 
-      <!-- Register Link -->
       <div class="mt-6 text-center">
         <p class="text-gray-600">
           Don't have an account yet? 
-          <a href="{% url 'main:register' %}" class="text-blue-600 font-semibold hover:text-blue-700 transition duration-200">
+          <a href="{% url 'main:register' %}" class="text-blue-600 font-semibold hover:text-blue-700">
             Register Now
           </a>
         </p>
       </div>
     </div>
-
-    <!-- Security Info -->
-    <div class="mt-8 text-center">
-      <p class="text-gray-500 text-sm flex items-center justify-center">
-        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
-        </svg>
-        Your information is secure with us
-      </p>
-    </div>
   </div>
 </div>
+
+<script src="{% static 'js/toast.js' %}"></script>
+<script src="{% static 'js/auth.js' %}"></script>
 {% endblock content %}
